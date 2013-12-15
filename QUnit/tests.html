@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>DateExtension QUnit Tests</title>
+        <link rel="stylesheet" href="resources/qunit.css" />
+        
+        
+        <script src="resources/qunit.js"></script>
+        <script src="../DateExtension-min.js"></script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+
+
+
+        <script>
+            // <![CDATA[
+
+            module('directExtensions : Extenções adicionadas diretamente no objeto Date');
+
+
+
+            test('IsLeapYear', function () {
+                ok(Date.IsLeapYear('2000'), 'Ano Bissexto');
+                ok(!Date.IsLeapYear(2001), 'Ano Comum');
+                ok(!Date.IsLeapYear(2002), 'Ano Comum');
+                ok(!Date.IsLeapYear(2003), 'Ano Comum');
+                ok(Date.IsLeapYear(2004), 'Ano Bissexto');
+                ok(!Date.IsLeapYear(2005), 'Ano Comum');
+                ok(!Date.IsLeapYear(2006), 'Ano Comum');
+                ok(!Date.IsLeapYear(2007), 'Ano Comum');
+                ok(Date.IsLeapYear(2008), 'Ano Bissexto');
+            });
+
+            test('DaysInMonth', function () {
+                equal(Date.DaysInMonth('2000', 0), 31, 'Último dia de Janeiro 2000');
+                equal(Date.DaysInMonth('2000', 1), 29, 'Último dia de Feverêiro 2000');
+                equal(Date.DaysInMonth('2000', 2), 31, 'Último dia de Março 2000');
+                equal(Date.DaysInMonth('2000', 3), 30, 'Último dia de Abril 2000');
+                equal(Date.DaysInMonth('2000', 4), 31, 'Último dia de Maio 2000');
+                equal(Date.DaysInMonth('2000', 5), 30, 'Último dia de Junho 2000');
+                equal(Date.DaysInMonth('2000', 6), 31, 'Último dia de Julho 2000');
+                equal(Date.DaysInMonth('2000', 7), 31, 'Último dia de Agosto 2000');
+                equal(Date.DaysInMonth('2000', 8), 30, 'Último dia de Setembro 2000');
+                equal(Date.DaysInMonth('2000', 9), 31, 'Último dia de Outubro 2000');
+                equal(Date.DaysInMonth('2000', 10), 30, 'Último dia de Novembro 2000');
+                equal(Date.DaysInMonth('2000', 11), 31, 'Último dia de Dezembro 2000');
+
+                equal(Date.DaysInMonth('2001', '0'), 31, 'Último dia de Janeiro 2001');
+                equal(Date.DaysInMonth(2001, 1), 28, 'Último dia de Feverêiro 2001');
+                equal(Date.DaysInMonth(2001, 2), 31, 'Último dia de Março 2001');
+                equal(Date.DaysInMonth(2001, 3), 30, 'Último dia de Abril 2001');
+                equal(Date.DaysInMonth('2001', 4), 31, 'Último dia de Maio 2001');
+                equal(Date.DaysInMonth('2001', 5), 30, 'Último dia de Junho 2001');
+                equal(Date.DaysInMonth('2001', 6), 31, 'Último dia de Julho 2001');
+                equal(Date.DaysInMonth('2001', 7), 31, 'Último dia de Agosto 2001');
+                equal(Date.DaysInMonth('2001', 8), 30, 'Último dia de Setembro 2001');
+                equal(Date.DaysInMonth('2001', 9), 31, 'Último dia de Outubro 2001');
+                equal(Date.DaysInMonth('2001', 10), 30, 'Último dia de Novembro 2001');
+                equal(Date.DaysInMonth('2001', 11), 31, 'Último dia de Dezembro 2001');
+            });
+
+            test('DifferenceInDays', function () {
+                var d1 = new Date(2013, 0, 1);
+                var d2 = new Date(2013, 0, 2);
+
+                var result = Date.DifferenceInDays(d1, d2);
+                var expected = 1;
+
+                equal(result, expected, '');
+            });
+
+            test('Limit', function () {
+                var y = [-1, 0, 1, 2013, 11000];
+                var yT = [1, 1, 1, 2013, 9999];
+
+                for (var i = 0; i < y.length; i++) {
+                    equal(yT[i], Date.Limit.Year(y[i]), 'Ano Correto');
+                }
+
+
+                var m = [-1, 0, 1, 10, 12, 13];
+                var mT = [0, 0, 1, 10, 11, 11];
+
+                for (var i = 0; i < m.length; i++) {
+                    equal(mT[i], Date.Limit.Month(m[i]), 'Mês Correto');
+                }
+
+
+                var d = [-1, 0, 1, 10, 30, 31];
+                var dT1 = [1, 1, 1, 10, 30, 31]; // janeiro
+                var dT2 = [1, 1, 1, 10, 28, 28]; // fevereiro de ano normal
+                var dT3 = [1, 1, 1, 10, 29, 29]; // fevereiro de ano bissexto
+
+                for (var i = 0; i < m.length; i++) {
+                    equal(dT1[i], Date.Limit.Day(d[i], 0, 2010), 'Dia Correto');
+                    equal(dT2[i], Date.Limit.Day(d[i], 1, 2010), 'Dia Correto');
+                    equal(dT3[i], Date.Limit.Day(d[i], 1, 2012), 'Dia Correto');
+                }
+
+
+                var h = [-1, 0, 1, 10, 23, 24];
+                var hT = [0, 0, 1, 10, 23, 23];
+
+                for (var i = 0; i < h.length; i++) {
+                    equal(hT[i], Date.Limit.Hour(h[i]), 'Hora Correta');
+                }
+
+
+                var m = [-1, 0, 1, 10, 45, 59, 61];
+                var mT = [0, 0, 1, 10, 45, 59, 59];
+
+                for (var i = 0; i < m.length; i++) {
+                    equal(mT[i], Date.Limit.Minute(m[i]), 'Minuto Correto');
+                }
+
+
+                var s = [-1, 0, 1, 10, 45, 59, 61];
+                var sT = [0, 0, 1, 10, 45, 59, 59];
+
+                for (var i = 0; i < s.length; i++) {
+                    equal(sT[i], Date.Limit.Second(s[i]), 'Segundo Correto');
+                }
+
+
+                var m = [-1, 0, 1, 200, 450, 590, 610, 999, 2000];
+                var mT = [0, 0, 1, 200, 450, 590, 610, 999, 999];
+
+                for (var i = 0; i < m.length; i++) {
+                    equal(mT[i], Date.Limit.Millisecond(m[i]), 'Milessegundo Correto');
+                }
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            module('dateExtensions : Extenções acessíveis a partir de instâncias do objeto Date');
+
+
+
+            test('SetYear and AddYear', function () {
+                var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
+                var objCorrectSet = new Date(3000, 0, 1, 0, 0, 0, 0);
+                var objCorrectAdd = new Date(2500, 0, 1, 0, 0, 0, 0);
+
+                obj = obj.SetYear(3000);
+                equal(obj.toString(), objCorrectSet.toString(), objCorrectSet.toString());
+
+                obj = obj.AddYears(-500);
+                equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
+            });
+
+            test('SetMonth and AddMonth', function () {
+                var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
+                var objCorrectSet = new Date(2000, 5, 1, 0, 0, 0, 0);
+                var objCorrectAdd = new Date(2000, 1, 1, 0, 0, 0, 0);
+
+                obj = obj.SetMonth(5);
+                equal(obj.toString(), objCorrectSet.toString(), objCorrectSet.toString());
+
+                obj = obj.AddMonths(-4);
+                equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
+            });
+
+            test('SetDay and AddDays', function () {
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    var DateToAddDays = new Date(ano, 0, 1);
+                    var addDay = 0;
+
+                    for (var mes = 0; mes <= 11; mes++) {
+                        var lastMonthDay = Date.DaysInMonth(ano, mes);
+                        var DateToSetDay = new Date(ano, mes, 1);
+
+                        for (var dia = 1; dia <= lastMonthDay; dia++) {
+                            var dataCerta = new Date(ano, mes, dia);
+                            var testeAddDays = DateToAddDays.AddDays(addDay);
+                            var testeSetDay = DateToSetDay.SetDay(dia);
+
+                            equal(testeAddDays.toString(), dataCerta.toString(), dataCerta.toString());
+                            equal(testeSetDay.toString(), dataCerta.toString(), dataCerta.toString());
+
+                            addDay++;
+                        }
+                    }
+                }
+                // Devido às regras UTC de local time não existe no brasil a meia noite do dia 21 de outubro.
+                // Isto causa um erro ao resgatar esta data. Para resolver utilize os métodos UTC abaixo.
+
+                //var certa = dataCerta.getFullYear() + '-' + dataCerta.getUTCMonth() + '-' + dataCerta.getUTCDate();
+                //var teste = objDate.getFullYear() + '-' + objDate.getUTCMonth() + '-' + objDate.getUTCDate();
+            });
+
+            test('SetHour and AddHour', function () {
+                var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
+                var objCorrectSet = new Date(2000, 0, 1, 16, 0, 0, 0);
+                var objCorrectAdd = new Date(1999, 11, 31, 8, 0, 0, 0);
+
+                obj = obj.SetHour(16);
+                equal(obj.toString(), objCorrectSet.toString(), objCorrectSet.toString());
+
+                obj = obj.AddHours(-32);
+                equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
+            });
+
+            test('SetMinute and AddMinute', function () {
+                var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
+                var objCorrectSet = new Date(2000, 0, 1, 0, 36, 0, 0);
+                var objCorrectAdd = new Date(1999, 11, 31, 23, 59, 0, 0);
+
+                obj = obj.SetMinute(36);
+                equal(obj.toString(), objCorrectSet.toString(), objCorrectSet.toString());
+
+                obj = obj.AddMinutes(-37);
+                equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
+            });
+
+            test('SetSecond and AddSecond', function () {
+                var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
+                var objCorrectSet = new Date(2000, 0, 1, 0, 0, 36, 0);
+                var objCorrectAdd = new Date(1999, 11, 31, 23, 59, 59, 0);
+
+                obj = obj.SetSecond(36);
+                equal(obj.toString(), objCorrectSet.toString(), objCorrectSet.toString());
+
+                obj = obj.AddSeconds(-37);
+                equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
+            });
+            test('SetMillisecond and AddMillisecond', function () {
+                var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
+                var objCorrectSet = new Date(2000, 0, 1, 0, 0, 0, 500);
+                var objCorrectAdd = new Date(1999, 11, 31, 23, 59, 58, 500);
+
+                obj = obj.SetMillisecond(500);
+                equal(obj.toString(), objCorrectSet.toString(), objCorrectSet.toString());
+                equal(obj.getMilliseconds(), objCorrectSet.getMilliseconds(), objCorrectSet.getMilliseconds());
+
+                obj = obj.AddMilliseconds(-2000);
+                equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
+                equal(obj.getMilliseconds(), objCorrectAdd.getMilliseconds(), objCorrectAdd.getMilliseconds());
+            });
+
+            test('FirstWorkDayInMonth', function () {
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        var dataTeste = new Date(ano, mes, 15, 0, 0, 0, 0);
+                        var dataCerta = new Date(ano, mes, 1, 0, 0, 0, 0);
+                        var addDay = 0;
+
+                        // Pula sabados e domingos
+                        if (dataCerta.DayOfWeek() == Date.DayOfWeek.Saturday) { addDay = 2; }
+                        else if (dataCerta.DayOfWeek() == Date.DayOfWeek.Sunday) { addDay = 1; }
+
+                        // Resgata o primeiro dia da semana do ano e mes alvo
+                        dataCerta = dataCerta.AddDays(addDay);
+                        dataTeste = dataTeste.FirstWorkDayInMonth();
+                        equal(dataCerta.toString(), dataTeste.toString());
+                    }
+                }
+            });
+
+            test('FirstDayOfWeekInMonth', function () {
+                // Efetua testes para todos os anos entre o seculo 20 e 21
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        // Resgata o gabarito para este mes e ano
+                        for (var i = 0; i < 7; i++) {
+                            var dataTeste = new Date(ano, mes, 15);
+                            var dataCerta = new Date(ano, mes, 1 + i);
+
+                            var day = dataCerta.getDay();
+
+                            dataTeste = dataTeste.FirstDayOfWeekInMonth(day);
+                            equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        }
+                    }
+                }
+            });
+
+            test('FirstWorkDayInYear', function () {
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        var dataTeste = new Date(ano, mes, 15, 0, 0, 0, 0);
+                        var dataCerta = new Date(ano, 0, 1, 0, 0, 0, 0);
+                        var addDay = 0;
+
+                        // Pula sabados e domingos
+                        if (dataCerta.DayOfWeek() == Date.DayOfWeek.Saturday) { addDay = 2; }
+                        else if (dataCerta.DayOfWeek() == Date.DayOfWeek.Sunday) { addDay = 1; }
+
+                        // Resgata o primeiro dia da semana do ano e mes alvo
+                        dataCerta = dataCerta.AddDays(addDay);
+                        dataTeste = dataTeste.FirstWorkDayInYear();
+                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                    }
+                }
+            });
+
+            test('FirstDayOfWeekInYear', function () {
+                // Efetua testes para todos os anos entre o seculo 20 e 21
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    // Resgata o gabarito para este mes e ano
+                    for (var i = 0; i < 7; i++) {
+                        var dataTeste = new Date(ano, 10, 15);
+                        var dataCerta = new Date(ano, 0, 1 + i);
+
+                        dataTeste = dataTeste.FirstDayOfWeekInYear(dataCerta.getDay());
+                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                    }
+                }
+            });
+
+            test('LastWorkDayInMonth', function () {
+                // Efetua testes para todos os anos entre o seculo 20 e 21
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        var dataTeste = new Date(ano, mes, 15, 0, 0, 0, 0);
+                        var dataCerta = new Date(ano, mes, Date.DaysInMonth(ano, mes), 0, 0, 0, 0);
+                        var addDay = 0;
+
+                        // Pula sabados e domingos
+                        if (dataCerta.DayOfWeek() == Date.DayOfWeek.Saturday) { addDay = -1; }
+                        else if (dataCerta.DayOfWeek() == Date.DayOfWeek.Sunday) { addDay = -2; }
+
+                        dataCerta = dataCerta.AddDays(addDay);
+                        dataTeste = dataTeste.LastWorkDayInMonth();
+
+                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                    }
+                }
+            });
+
+            test('LastDayOfWeekInMonth', function () {
+                // Efetua testes para todos os anos entre o seculo 20 e 21
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        // Resgata o gabarito para este mes e ano
+                        for (var i = 0; i < 7; i++) {
+                            var day = Date.DaysInMonth(ano, mes) - i;
+                            var dataTeste = new Date(ano, mes, 15);
+                            var dataCerta = new Date(ano, mes, day);
+
+                            dataTeste = dataTeste.LastDayOfWeekInMonth(dataCerta.getDay());
+                            equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        }
+                    }
+                }
+            });
+
+            test('LastWorkDayInYear', function () {
+                // Efetua testes para todos os anos entre o seculo 20 e 21
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        var dataTeste = new Date(ano, mes, 15, 0, 0, 0, 0);
+                        var dataCerta = new Date(ano, 11, 31, 0, 0, 0, 0);
+                        var addDay = 0;
+
+                        // Pula sabados e domingos
+                        if (dataCerta.DayOfWeek() == Date.DayOfWeek.Saturday) { addDay = -1; }
+                        else if (dataCerta.DayOfWeek() == Date.DayOfWeek.Sunday) { addDay = -2; }
+
+                        // Resgata o primeiro dia da semana do ano e mes alvo
+                        dataCerta = dataCerta.AddDays(addDay);
+                        dataTeste = dataTeste.LastWorkDayInYear();
+                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                    }
+                }
+            });
+
+            test('LastDayOfWeekInYear', function () {
+                // Efetua testes para todos os anos entre o seculo 20 e 21
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    // Resgata o gabarito para este mes e ano
+                    for (var i = 0; i < 7; i++) {
+                        var dataTeste = new Date(ano, 10, 15);
+                        var dataCerta = new Date(ano, 11, 31 - i);
+
+                        dataTeste = dataTeste.LastDayOfWeekInYear(dataCerta.getDay());
+                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                    }
+                }
+            });
+
+            test('ClosestWorkDay', function () {
+                ok(true, 'Não há teste para este método');
+            });
+            test('NextWorkDay', function () {
+                ok(true, 'Não há teste para este método');
+            });
+            test('IsHoliday_Brasil', function () {
+                ok(true, 'Não há teste para este método');
+            });
+            test('NextWorkDay_Brasil', function () {
+                ok(true, 'Não há teste para este método');
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            module('specificPoints : Acesso rápido a pontos específicos');
+
+
+
+            test('BeginningOfDay', function () {
+                // Inicia uma instância de teste
+                var obj = new Date(2000, 5, 17, 9, 45, 17, 538);
+                obj = obj.BeginningOfDay();
+
+                equal(obj.getFullYear(), 2000);
+                equal(obj.getMonth(), 5);
+                equal(obj.getDate(), 17);
+                equal(obj.getHours(), 0);
+                equal(obj.getMinutes(), 0);
+                equal(obj.getSeconds(), 0);
+                equal(obj.getMilliseconds(), 0);
+            });
+
+            test('BeginningOfWeek', function () {
+
+                // Por todo o ano 2000
+                var ano = 2000;
+                var dataTeste = new Date(ano, 0, 3, 0, 0, 0, 0); // - Primeira segunda feira do ano de teste
+                var dataCerta = new Date(ano, 0, 3, 0, 0, 0, 0);
+
+                var iCount = 0;
+                var ii = 0;
+                while (ii <= 356) {
+                    dataTeste = dataTeste.BeginningOfWeek();
+                    equal(dataTeste.toDateString(), dataCerta.toDateString());
+
+                    if (iCount == 7) {
+                        dataCerta = new Date(ano, dataTeste.getMonth(), dataTeste.getDate(), 0, 0, 0, 0);
+                        iCount = 1;
+                    }
+                    iCount++;
+
+                    dataTeste.setDate(dataTeste.getDate() + 1);
+                    ii++;
+                }
+
+
+                ano = 2003;
+                dataTeste = new Date(2003, 0, 1, 0, 0, 0, 0); // - Testa retroceder ao ano anterior
+                dataCerta = new Date(2002, 11, 30, 0, 0, 0, 0);
+
+                dataTeste = dataTeste.BeginningOfWeek();
+                equal(dataTeste.toDateString(), dataCerta.toDateString());
+            });
+
+            test('BeginningOfMonth', function () {
+                for (var ano = 1900; ano <= 2101; ano++) {
+
+                    for (var mes = 0; mes < 12; mes++) {
+                        var dataCerta = new Date(ano, mes, 1);
+                        var maxDay = Date.DaysInMonth(ano, mes);
+
+                        for (var dia = 1; dia <= maxDay; dia++) {
+                            var dataTeste = new Date(ano, mes, dia);
+                            dataTeste = dataTeste.BeginningOfMonth();
+                            equal(dataTeste.toDateString(), dataCerta.toDateString());
+                        }
+                    }
+                }
+            });
+
+            test('BeginningOfYear', function () {
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    var dataCerta = new Date(ano, 0, 1);
+
+                    for (var mes = 0; mes < 12; mes++) {
+                        var maxDay = Date.DaysInMonth(ano, mes);
+
+                        for (var dia = 1; dia <= maxDay; dia++) {
+                            var dataTeste = new Date(ano, mes, dia);
+                            dataTeste = dataTeste.BeginningOfYear();
+                            equal(dataTeste.toDateString(), dataCerta.toDateString());
+                        }
+
+                    }
+
+                }
+            });
+
+            test('EndOfDay', function () {
+                // Inicia uma instância de teste
+                var obj = new Date(2000, 5, 17, 9, 45, 17, 538);
+                obj = obj.EndOfDay();
+
+                equal(obj.getFullYear(), 2000);
+                equal(obj.getMonth(), 5);
+                equal(obj.getDate(), 17);
+                equal(obj.getHours(), 23);
+                equal(obj.getMinutes(), 59);
+                equal(obj.getSeconds(), 59);
+                equal(obj.getMilliseconds(), 999);
+            });
+
+            test('EndOfMonth', function () {
+                var objDate = new Date(2000, 1, 1, 0, 0, 0, 0);
+
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    for (var mes = 0; mes < 12; mes++) {
+                        var maxDay = Date.DaysInMonth(ano, mes);
+                        var dataCerta = new Date(ano, mes, maxDay);
+
+                        for (var dia = 1; dia <= maxDay; dia++) {
+                            var dataTeste = new Date(ano, mes, dia);
+                            dataTeste = dataTeste.EndOfMonth();
+                            equal(dataTeste.toDateString(), dataCerta.toDateString());
+                        }
+                    }
+                }
+            });
+
+            test('EndOfYear', function () {
+                var objDate = new Date(2000, 1, 1, 0, 0, 0, 0);
+
+                for (var ano = 1900; ano <= 2101; ano++) {
+                    var dataCerta = new Date(ano, 11, 31);
+
+                    for (var mes = 0; mes < 12; mes++) {
+                        var maxDay = Date.DaysInMonth(ano, mes);
+                        for (var dia = 1; dia <= maxDay; dia++) {
+                            var dataTeste = new Date(ano, mes, dia);
+                            dataTeste = dataTeste.EndOfYear();
+                            equal(dataTeste.toDateString(), dataCerta.toDateString());
+                        }
+                    }
+                }
+            });
+
+            // ]]>
+        </script>
+    </body>
+</html>
