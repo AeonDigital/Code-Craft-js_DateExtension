@@ -12,16 +12,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 /**
 * Objeto Date do javascript.
 *
@@ -31,6 +21,7 @@
 *
 * @global
 */
+
 
 
 
