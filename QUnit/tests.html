@@ -21,7 +21,7 @@
             module('directExtensions : Extenções adicionadas diretamente no objeto Date');
 
 
-
+            
             test('IsLeapYear', function () {
                 ok(Date.IsLeapYear('2000'), 'Ano Bissexto');
                 ok(!Date.IsLeapYear(2001), 'Ano Comum');
@@ -33,7 +33,7 @@
                 ok(!Date.IsLeapYear(2007), 'Ano Comum');
                 ok(Date.IsLeapYear(2008), 'Ano Bissexto');
             });
-
+            
             test('DaysInMonth', function () {
                 equal(Date.DaysInMonth('2000', 0), 31, 'Último dia de Janeiro 2000');
                 equal(Date.DaysInMonth('2000', 1), 29, 'Último dia de Feverêiro 2000');
@@ -61,7 +61,7 @@
                 equal(Date.DaysInMonth('2001', 10), 30, 'Último dia de Novembro 2001');
                 equal(Date.DaysInMonth('2001', 11), 31, 'Último dia de Dezembro 2001');
             });
-
+            
             test('DifferenceInDays', function () {
                 var d1 = new Date(2013, 0, 1);
                 var d2 = new Date(2013, 0, 2);
@@ -71,7 +71,7 @@
 
                 equal(result, expected, '');
             });
-
+            
             test('Limit', function () {
                 var y = [-1, 0, 1, 2013, 11000];
                 var yT = [1, 1, 1, 2013, 9999];
@@ -133,7 +133,7 @@
                 }
 
             });
-
+            
 
 
 
@@ -156,7 +156,7 @@
             module('dateExtensions : Extenções acessíveis a partir de instâncias do objeto Date');
 
 
-
+            
             test('SetYear and AddYear', function () {
                 var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
                 var objCorrectSet = new Date(3000, 0, 1, 0, 0, 0, 0);
@@ -168,7 +168,7 @@
                 obj = obj.AddYears(-500);
                 equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
             });
-
+            
             test('SetMonth and AddMonth', function () {
                 var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
                 var objCorrectSet = new Date(2000, 5, 1, 0, 0, 0, 0);
@@ -180,7 +180,7 @@
                 obj = obj.AddMonths(-4);
                 equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
             });
-
+            
             test('SetDay and AddDays', function () {
                 for (var ano = 1900; ano <= 2101; ano++) {
                     var DateToAddDays = new Date(ano, 0, 1);
@@ -195,8 +195,8 @@
                             var testeAddDays = DateToAddDays.AddDays(addDay);
                             var testeSetDay = DateToSetDay.SetDay(dia);
 
-                            equal(testeAddDays.toString(), dataCerta.toString(), dataCerta.toString());
-                            equal(testeSetDay.toString(), dataCerta.toString(), dataCerta.toString());
+                            equal(testeAddDays.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
+                            equal(testeSetDay.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
 
                             addDay++;
                         }
@@ -208,7 +208,7 @@
                 //var certa = dataCerta.getFullYear() + '-' + dataCerta.getUTCMonth() + '-' + dataCerta.getUTCDate();
                 //var teste = objDate.getFullYear() + '-' + objDate.getUTCMonth() + '-' + objDate.getUTCDate();
             });
-
+            
             test('SetHour and AddHour', function () {
                 var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
                 var objCorrectSet = new Date(2000, 0, 1, 16, 0, 0, 0);
@@ -220,7 +220,7 @@
                 obj = obj.AddHours(-32);
                 equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
             });
-
+            
             test('SetMinute and AddMinute', function () {
                 var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
                 var objCorrectSet = new Date(2000, 0, 1, 0, 36, 0, 0);
@@ -232,7 +232,7 @@
                 obj = obj.AddMinutes(-37);
                 equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
             });
-
+            
             test('SetSecond and AddSecond', function () {
                 var obj = new Date(2000, 0, 1, 0, 0, 0, 0);
                 var objCorrectSet = new Date(2000, 0, 1, 0, 0, 36, 0);
@@ -257,7 +257,7 @@
                 equal(obj.toString(), objCorrectAdd.toString(), objCorrectAdd.toString());
                 equal(obj.getMilliseconds(), objCorrectAdd.getMilliseconds(), objCorrectAdd.getMilliseconds());
             });
-
+            
             test('FirstWorkDayInMonth', function () {
                 for (var ano = 1900; ano <= 2101; ano++) {
                     for (var mes = 0; mes < 12; mes++) {
@@ -272,11 +272,11 @@
                         // Resgata o primeiro dia da semana do ano e mes alvo
                         dataCerta = dataCerta.AddDays(addDay);
                         dataTeste = dataTeste.FirstWorkDayInMonth();
-                        equal(dataCerta.toString(), dataTeste.toString());
+                        equal(dataCerta.getTimezoneOffset(), dataTeste.getTimezoneOffset());
                     }
                 }
             });
-
+            
             test('FirstDayOfWeekInMonth', function () {
                 // Efetua testes para todos os anos entre o seculo 20 e 21
                 for (var ano = 1900; ano <= 2101; ano++) {
@@ -289,12 +289,12 @@
                             var day = dataCerta.getDay();
 
                             dataTeste = dataTeste.FirstDayOfWeekInMonth(day);
-                            equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                            equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                         }
                     }
                 }
             });
-
+           
             test('FirstWorkDayInYear', function () {
                 for (var ano = 1900; ano <= 2101; ano++) {
                     for (var mes = 0; mes < 12; mes++) {
@@ -309,11 +309,11 @@
                         // Resgata o primeiro dia da semana do ano e mes alvo
                         dataCerta = dataCerta.AddDays(addDay);
                         dataTeste = dataTeste.FirstWorkDayInYear();
-                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                     }
                 }
             });
-
+             
             test('FirstDayOfWeekInYear', function () {
                 // Efetua testes para todos os anos entre o seculo 20 e 21
                 for (var ano = 1900; ano <= 2101; ano++) {
@@ -323,11 +323,11 @@
                         var dataCerta = new Date(ano, 0, 1 + i);
 
                         dataTeste = dataTeste.FirstDayOfWeekInYear(dataCerta.getDay());
-                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                     }
                 }
             });
-
+           
             test('LastWorkDayInMonth', function () {
                 // Efetua testes para todos os anos entre o seculo 20 e 21
                 for (var ano = 1900; ano <= 2101; ano++) {
@@ -343,11 +343,11 @@
                         dataCerta = dataCerta.AddDays(addDay);
                         dataTeste = dataTeste.LastWorkDayInMonth();
 
-                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                     }
                 }
             });
-
+             
             test('LastDayOfWeekInMonth', function () {
                 // Efetua testes para todos os anos entre o seculo 20 e 21
                 for (var ano = 1900; ano <= 2101; ano++) {
@@ -359,12 +359,12 @@
                             var dataCerta = new Date(ano, mes, day);
 
                             dataTeste = dataTeste.LastDayOfWeekInMonth(dataCerta.getDay());
-                            equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                            equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                         }
                     }
                 }
             });
-
+            
             test('LastWorkDayInYear', function () {
                 // Efetua testes para todos os anos entre o seculo 20 e 21
                 for (var ano = 1900; ano <= 2101; ano++) {
@@ -380,7 +380,7 @@
                         // Resgata o primeiro dia da semana do ano e mes alvo
                         dataCerta = dataCerta.AddDays(addDay);
                         dataTeste = dataTeste.LastWorkDayInYear();
-                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                     }
                 }
             });
@@ -394,7 +394,7 @@
                         var dataCerta = new Date(ano, 11, 31 - i);
 
                         dataTeste = dataTeste.LastDayOfWeekInYear(dataCerta.getDay());
-                        equal(dataTeste.toString(), dataCerta.toString(), dataCerta.toString());
+                        equal(dataTeste.getTimezoneOffset(), dataCerta.getTimezoneOffset(), dataCerta.toString());
                     }
                 }
             });
