@@ -808,7 +808,7 @@ Date.prototype.IsHoliday_Brasil = function() {
 	if ((m == 0 && d == 1) ||	// 1º de Janeiro
 		(m == 3 && d == 21) ||	// Tiradentes
 		(m == 4 && d == 1) ||	// Dia dos Trabalhadores
-		(m == 8 && d == 7) ||	// Dia da Independencia
+		(m == 8 && d == 7) ||	// Dia da Independência
 		(m == 9 && d == 12) ||	// Dia das Crianças [Tambem chamado por motivo desconhecido de Nossa Senhora Aparecida]
 		(m == 10 && d == 2) ||	// Finados
 		(m == 10 && d == 15) ||	// Proclamação da República
